@@ -100,6 +100,47 @@ const generatePassword = () => {
 
     }
 
+    let pass = '';
+
+    for (let i = 0; i < sliderValor.value; ++i){
+        //Adiciona um caractere aleatório à senha:
+        // 1. Math.random() gera um número decimal entre 0 e 1
+        // 2. Multiplicado pelo comprimento do charset para obter um índice válido
+        // 3. Math;floor() arredonda para baixo para obter um índice inteiro
+        // 4. charAt() retorna o caractere na posição do índice calculado
+        pass += selectedCharset.charAt(Math.floor(Math.random() * selectedCharset.length));
+
+    }
+
+    //Remove a classe 'hide' para exibir o container da senha
+    containerPassword.classList.remove('hide');
+    //Insere a senha gerada no elemento HTML 
+    password.innerHTML = pass;
+    //Armazena a senha atual na variável global para uso posterior (ex: copiar)
+    novaSenha = pass;
+
+    //Gerenciamento do histórico de senhas:
+    //unshift() adiciona a nova senha no início do array
+    historicoSenhas.unshift(pass);
+    //Limita o histórico a 3 senhas:
+    //Se o array tiver mais de 3 itens. pop() remove o último
+    if (historicoSenhas,length > 3){
+        historicoSenhas.pop();
+    }
+
+    //Atualiza a lista de histórico da interface:
+    const historico = document.querySelector('password-generator__history'):
+    if (historico) {
+        //Remove a classe 'hide' para exibir o histórico
+        historico.style.display = 'block';
+        // Cria elementos <li> para cada senha do histórico:
+        // 1.map() transforma cada senha em um elemnto HTML
+        // 2. join('') concatena todos os elementos em uma única string
+        historico.querySelector('.password-generator__history-list').innerHTML = historicoSenhas
+            .map(senha => `<li class="password-generator__history-item>${senha}</li>`)
+            .join('');
+    }
+
 
 
 }
